@@ -1,0 +1,245 @@
+@import "tailwindcss";
+
+/* ============================================================
+   AURUM ATELIER — DESIGN SYSTEM
+   Every value here is the single source of truth for its token.
+   Never hardcode a color, radius, breakpoint or font size in a
+   component — use the generated Tailwind utility instead.
+   ============================================================ */
+
+@theme {
+  /* Breakpoints — overrides Tailwind defaults to match spec Ch.3 */
+  --breakpoint-xs: 390px;
+  --breakpoint-sm: 480px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1440px;
+  --breakpoint-3xl: 1920px;
+
+  /* Color system */
+  --color-bg: #050505;
+  --color-bg-secondary: #0d0d0d;
+  --color-surface: rgba(255, 255, 255, 0.03);
+  --color-glass: rgba(255, 255, 255, 0.06);
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-text: #ffffff;
+  --color-text-secondary: #c8c8c8;
+  --color-text-muted: #8c8c8c;
+  --color-gold: #d4af37;
+  --color-divider: rgba(255, 255, 255, 0.06);
+  --color-success: #c8d9b6;
+  --color-error: #c96a6a;
+
+  /* Single typeface. Optical-sizing serif — carries both the 110px
+     display heading and the 18px body paragraph without a second family. */
+  --font-serif: var(--font-fraunces), "Fraunces", ui-serif, Georgia, serif;
+
+  /* Fluid type scale — clamp(min, fluid, max) per spec Ch.3 ranges */
+  --text-display: clamp(3.5rem, 2.6rem + 4.2vw, 6.875rem);
+  --text-display--line-height: 1.0;
+  --text-display--letter-spacing: -0.02em;
+  --text-display--font-weight: 700;
+
+  --text-heading: clamp(2.5rem, 2rem + 2.4vw, 4.5rem);
+  --text-heading--line-height: 1.05;
+  --text-heading--letter-spacing: -0.015em;
+  --text-heading--font-weight: 700;
+
+  --text-subheading: clamp(1.75rem, 1.5rem + 1.1vw, 2.5rem);
+  --text-subheading--line-height: 1.15;
+  --text-subheading--letter-spacing: -0.01em;
+  --text-subheading--font-weight: 600;
+
+  --text-body-lg: clamp(1.125rem, 1.05rem + 0.3vw, 1.375rem);
+  --text-body-lg--line-height: 1.6;
+  --text-body-lg--font-weight: 400;
+
+  --text-body: 1.125rem;
+  --text-body--line-height: 1.7;
+  --text-body--font-weight: 400;
+
+  --text-small: clamp(0.875rem, 0.83rem + 0.15vw, 1rem);
+  --text-small--line-height: 1.6;
+  --text-small--font-weight: 400;
+
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1.4;
+  --text-caption--font-weight: 500;
+  --text-caption--letter-spacing: 0.28em;
+
+  /* Radius */
+  --radius-button: 14px;
+  --radius-card: 24px;
+  --radius-image: 24px;
+  --radius-modal: 28px;
+  --radius-nav: 20px;
+
+  /* Easing — mirrors src/config/motion.ts EASE for CSS transitions */
+  --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-power3: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --ease-power2-inout: cubic-bezier(0.645, 0.045, 0.355, 1);
+  --ease-sine: cubic-bezier(0.39, 0.575, 0.565, 1);
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--color-bg);
+  scroll-behavior: auto; /* Lenis owns smooth scrolling */
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-serif);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+@media (pointer: coarse) {
+  body {
+    cursor: auto;
+  }
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-bg);
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Visible focus for keyboard navigation (Ch.10) — cursor:none hides the
+   pointer but never keyboard focus. */
+:focus-visible {
+  outline: 1.5px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+/* ============================================================
+   REDUCED MOTION
+   Disabled globally via JS (GSAP matchMedia) — this is the CSS-only
+   fallback for anything not driven by GSAP.
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
+   GLASS SURFACES
+   ============================================================ */
+
+.glass {
+  background: var(--color-glass);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid var(--color-border);
+}
+
+.glass-nav {
+  background: rgba(5, 5, 5, 0.15);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  border-bottom: 1px solid transparent;
+  transition:
+    background 0.6s var(--ease-luxury),
+    backdrop-filter 0.6s var(--ease-luxury),
+    border-color 0.6s var(--ease-luxury);
+}
+
+.glass-nav.is-scrolled {
+  background: rgba(5, 5, 5, 0.75);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* ============================================================
+   CURSOR
+   ============================================================ */
+
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--color-gold);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  pointer-events: none;
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+  will-change: transform, width, height;
+  transition:
+    width 0.35s var(--ease-luxury),
+    height 0.35s var(--ease-luxury),
+    border-color 0.35s var(--ease-luxury),
+    background 0.35s var(--ease-luxury);
+}
+
+.cursor-label {
+  font-family: var(--font-serif);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-bg);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+
+.reveal-mask {
+  overflow: hidden;
+}
+
+.split-line {
+  overflow: hidden;
+  display: block;
+}
+
+.split-char {
+  display: inline-block;
+  will-change: transform, opacity;
+}
