@@ -52,9 +52,11 @@ export default function RootLayout({
     <html lang="en" className={`${fraunces.variable} h-full`}>
       <body className="min-h-full antialiased">
         <StructuredData />
-        <PageLoader />
-        <LuxuryCursor />
-        <SmoothScrollProvider>{children}</SmoothScrollProvider>
+        <SmoothScrollProvider>
+          <PageLoader />
+          <LuxuryCursor />
+          {children}
+        </SmoothScrollProvider>
       </body>
     </html>
   );
