@@ -93,6 +93,8 @@
 html {
   background: var(--color-bg);
   scroll-behavior: auto; /* Lenis owns smooth scrolling */
+  overflow-anchor: none; /* pinned ScrollTrigger sections resize on measure; don't let
+                             native scroll-anchoring "correct" position because of it */
 }
 
 body {
@@ -100,7 +102,21 @@ body {
   color: var(--color-text);
   font-family: var(--font-serif);
   overflow-x: hidden;
+  overflow-anchor: none;
   cursor: none;
+  position: relative;
+}
+
+/* Fixed corner ambience — pure CSS, no canvas/asset cost, always-on premium depth cue. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(212, 175, 55, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(212, 175, 55, 0.04) 0%, transparent 50%);
 }
 
 @media (pointer: coarse) {
@@ -131,6 +147,39 @@ body {
 }
 
 /* ============================================================
+   AMBIENT ORBS — slow blurred gradient drift, gives static/placeholder
+   scenes a sense of life without needing any real media asset.
+   ============================================================ */
+
+.ambient-orb {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(80px);
+  opacity: 0.15;
+  pointer-events: none;
+  animation: orb-float 20s ease-in-out infinite;
+}
+
+@keyframes orb-float {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -40px) scale(1.05);
+  }
+  66% {
+    transform: translate(-20px, 30px) scale(0.95);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-orb {
+    animation: none;
+  }
+}
+
+/* ============================================================
    REDUCED MOTION
    Disabled globally via JS (GSAP matchMedia) — this is the CSS-only
    fallback for anything not driven by GSAP.
@@ -158,22 +207,51 @@ body {
   border: 1px solid var(--color-border);
 }
 
-.glass-nav {
-  background: rgba(5, 5, 5, 0.15);
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(0px);
-  border-bottom: 1px solid transparent;
+/* Layered hover depth: a top-edge gradient line reveal + a soft radial glow,
+   both fading in together rather than a flat lift/border-color swap. */
+.glow-card {
+  position: relative;
+  overflow: hidden;
   transition:
-    background 0.6s var(--ease-luxury),
-    backdrop-filter 0.6s var(--ease-luxury),
-    border-color 0.6s var(--ease-luxury);
+    transform 0.5s var(--ease-luxury),
+    border-color 0.5s var(--ease-luxury),
+    box-shadow 0.5s var(--ease-luxury);
 }
 
-.glass-nav.is-scrolled {
-  background: rgba(5, 5, 5, 0.75);
-  backdrop-filter: blur(20px) saturate(140%);
-  -webkit-backdrop-filter: blur(20px) saturate(140%);
-  border-bottom: 1px solid var(--color-border);
+.glow-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.5), transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.glow-card::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 30% 30%, rgba(212, 175, 55, 0.08) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.glow-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(212, 175, 55, 0.2);
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.4),
+    0 0 40px rgba(212, 175, 55, 0.06);
+}
+
+.glow-card:hover::before,
+.glow-card:hover::after {
+  opacity: 1;
 }
 
 /* ============================================================

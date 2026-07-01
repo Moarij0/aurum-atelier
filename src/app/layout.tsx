@@ -3,6 +3,7 @@ import { Fraunces } from "next/font/google";
 import "./globals.css";
 import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 import LuxuryCursor from "@/components/providers/LuxuryCursor";
+import ScrollProgress from "@/components/providers/ScrollProgress";
 import PageLoader from "@/components/PageLoader";
 import StructuredData from "@/components/StructuredData";
 import { SITE } from "@/constants/site";
@@ -55,6 +56,7 @@ export default function RootLayout({
         <SmoothScrollProvider>
           <PageLoader />
           <LuxuryCursor />
+          <ScrollProgress />
           {children}
         </SmoothScrollProvider>
       </body>

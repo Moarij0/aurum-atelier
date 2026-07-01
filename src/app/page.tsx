@@ -9,13 +9,14 @@ import Awards from "@/components/Awards";
 import Testimonials from "@/components/Testimonials";
 import Booking from "@/components/Booking";
 import Footer from "@/components/Footer";
-import { resolveVideoSources, resolveImage } from "@/lib/assets";
+import { resolveVideoSources, resolveImage, resolveFrameSequence } from "@/lib/assets";
 import { SERVICES, GALLERY_ITEMS, ARTIST } from "@/constants/site";
 
 // Server Component: the only place that touches the filesystem. Every
 // section below is a Client Component (GSAP needs the DOM), so asset
 // resolution happens here and gets passed down as plain props.
 export default function Home() {
+  const heroFrames = resolveFrameSequence("hero");
   const heroVideo = resolveVideoSources("hero");
   const brandStoryVideo = resolveVideoSources("brand-story");
   const philosophyVideo = resolveVideoSources("philosophy");
@@ -35,7 +36,7 @@ export default function Home() {
     <>
       <Navbar />
       <main className="bg-bg">
-        <Hero videoSources={heroVideo} />
+        <Hero videoSources={heroVideo} frames={heroFrames} />
         <BrandStory videoSources={brandStoryVideo} />
         <Philosophy videoSources={philosophyVideo} />
         <Services videoSourcesMap={serviceVideos} />

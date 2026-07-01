@@ -3,11 +3,19 @@
 import { ArrowRight } from "lucide-react";
 import { useHeroTimeline } from "@/animations/hero";
 import VideoPlayer from "./shared/VideoPlayer";
+import ScrollFrameSequence from "./shared/ScrollFrameSequence";
 import LinkButton from "./shared/LinkButton";
+import AmbientOrbs from "./shared/AmbientOrbs";
 import { SITE } from "@/constants/site";
 import type { VideoSources } from "@/lib/assets";
 
-export default function Hero({ videoSources }: { videoSources: VideoSources }) {
+export default function Hero({
+  videoSources,
+  frames,
+}: {
+  videoSources: VideoSources;
+  frames: string[];
+}) {
   const {
     sectionRef,
     videoWrapRef,
@@ -26,8 +34,14 @@ export default function Hero({ videoSources }: { videoSources: VideoSources }) {
       className="relative flex h-[100svh] w-full items-center justify-center overflow-hidden"
     >
       <div ref={videoWrapRef} className="absolute inset-0">
-        <VideoPlayer sources={videoSources} label="Hero Video" priority />
+        {frames.length > 0 ? (
+          <ScrollFrameSequence frames={frames} label="Hero Video" />
+        ) : (
+          <VideoPlayer sources={videoSources} label="Hero Video" priority />
+        )}
       </div>
+
+      <AmbientOrbs />
 
       <div className="relative z-10 flex flex-col items-center px-6 text-center">
         <p ref={captionRef} className="mb-6 font-serif text-caption text-gold">

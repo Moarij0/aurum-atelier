@@ -25,9 +25,10 @@ export default function SmoothScrollProvider({
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const instance = new Lenis({
-      duration: 1.4,
-      easing: (t: number) => 1 - Math.pow(1 - t, 4),
+      duration: 1.8, // slower glide reads as more cinematic/premium than a snappy scroll
+      easing: (t: number) => 1 - Math.pow(1 - t, 3), // easeOutCubic — smoother stop than quartic
       smoothWheel: !reduced,
+      wheelMultiplier: 0.8, // a heavier wheel feel is a deliberate luxury cue, not a bug
       touchMultiplier: 1.2,
     });
 
@@ -40,7 +41,6 @@ export default function SmoothScrollProvider({
     gsap.ticker.lagSmoothing(0);
 
     setLenis(instance);
-    ScrollTrigger.refresh();
 
     return () => {
       gsap.ticker.remove(tick);

@@ -21,12 +21,17 @@ export default function Navbar() {
   return (
     <header
       ref={headerRef}
-      className={cn("glass-nav fixed left-0 right-0 top-0 z-50", scrolled && "is-scrolled")}
+      className={cn(
+        "fixed left-1/2 top-5 z-50 w-[calc(100%-40px)] -translate-x-1/2 rounded-nav border transition-[max-width,border-radius,background-color,backdrop-filter,padding] duration-500 ease-luxury",
+        scrolled
+          ? "max-w-[720px] rounded-full border-gold/15 bg-bg/80 backdrop-blur-xl"
+          : "max-w-[1400px] border-white/8 bg-bg/40 backdrop-blur-md"
+      )}
     >
       <nav
         className={cn(
-          "mx-auto flex max-w-[1440px] items-center justify-between px-6 transition-[padding] duration-500 ease-luxury lg:px-20",
-          scrolled ? "py-4" : "py-7"
+          "flex items-center justify-between px-6 transition-[padding] duration-500 ease-luxury lg:px-8",
+          scrolled ? "py-3" : "py-4"
         )}
       >
         <a
@@ -84,7 +89,7 @@ export default function Navbar() {
       </nav>
 
       {open && (
-        <div className="flex flex-col items-center gap-8 border-t border-divider bg-bg/98 px-6 py-10 backdrop-blur-xl md:hidden">
+        <div className="flex flex-col items-center gap-8 rounded-b-nav border-t border-divider bg-bg/98 px-6 py-10 backdrop-blur-xl md:hidden">
           {NAV_LINKS.map((link) => (
             <a
               key={link.href}

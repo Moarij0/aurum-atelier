@@ -1,6 +1,7 @@
 "use client";
 
 import VideoPlayer from "./shared/VideoPlayer";
+import AmbientOrbs from "./shared/AmbientOrbs";
 import { useReveal } from "@/hooks/useReveal";
 import type { VideoSources } from "@/lib/assets";
 
@@ -15,6 +16,7 @@ export default function Philosophy({ videoSources }: { videoSources: VideoSource
       className="relative flex h-[100vh] w-full items-center justify-center overflow-hidden"
     >
       <VideoPlayer sources={videoSources} label="Philosophy Video" />
+      <AmbientOrbs />
 
       <div className="relative z-10 max-w-2xl px-6 text-center">
         <div className="reveal-mask">

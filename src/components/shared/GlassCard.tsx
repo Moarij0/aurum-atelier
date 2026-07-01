@@ -5,7 +5,7 @@ import { cn } from "@/lib/cn";
 const GlassCard = forwardRef<HTMLDivElement, { children: React.ReactNode; className?: string }>(
   function GlassCard({ children, className }, ref) {
     return (
-      <div ref={ref} className={cn("glass rounded-card p-8", className)}>
+      <div ref={ref} className={cn("glass glow-card rounded-card p-8", className)}>
         {children}
       </div>
     );

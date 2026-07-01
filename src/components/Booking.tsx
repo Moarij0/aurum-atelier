@@ -3,6 +3,7 @@
 import VideoPlayer from "./shared/VideoPlayer";
 import SplitHeading from "./shared/SplitHeading";
 import LinkButton from "./shared/LinkButton";
+import AmbientOrbs from "./shared/AmbientOrbs";
 import { useReveal } from "@/hooks/useReveal";
 import { useParallax } from "@/hooks/useParallax";
 import { SITE } from "@/constants/site";
@@ -23,6 +24,7 @@ export default function Booking({ videoSources }: { videoSources: VideoSources }
       <div ref={videoRef} className="absolute inset-x-0 -top-[8%] h-[116%]">
         <VideoPlayer sources={videoSources} label="Booking Video" />
       </div>
+      <AmbientOrbs />
 
       <div className="relative z-10 max-w-2xl px-6 text-center">
         <SplitHeading as="h2" size="heading">

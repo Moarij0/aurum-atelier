@@ -24,10 +24,7 @@ function TestimonialCard({
   return (
     <GlassCard
       ref={ref}
-      className={cn(
-        "flex h-full flex-col justify-between transition-transform duration-500 ease-luxury hover:-translate-y-2",
-        featured && "md:row-span-2"
-      )}
+      className={cn("flex h-full flex-col justify-between", featured && "md:row-span-2")}
     >
       <p className="font-serif text-subheading italic text-text text-balance">&ldquo;{quote}&rdquo;</p>
       <div className="mt-10">

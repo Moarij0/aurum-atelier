@@ -1,7 +1,8 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { LOADER, LOADED_EVENT } from "@/config/motion";
 import { useLenis } from "@/hooks/useLenis";
 import { SITE } from "@/constants/site";
@@ -19,16 +20,28 @@ export default function PageLoader() {
   const logoRef = useRef<HTMLDivElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
   const lenis = useLenis();
+  const lenisRef = useRef(lenis);
+
+  // Lenis becomes available asynchronously (a tick after this component
+  // mounts) — track it via ref so the one-shot timeline below doesn't
+  // restart when the value changes.
+  useEffect(() => {
+    lenisRef.current = lenis;
+  }, [lenis]);
 
   useLayoutEffect(() => {
-    lenis?.stop();
+    lenisRef.current?.stop();
     document.body.style.overflow = "hidden";
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const release = () => {
       document.body.style.overflow = "";
-      lenis?.start();
+      lenisRef.current?.start();
+      // Pinned/scrubbed sections only settle once the page is actually
+      // scrollable — measuring them earlier (while scroll is locked) can
+      // mismeasure pin boundaries and cause a corrective scroll jump.
+      ScrollTrigger.refresh();
       window.dispatchEvent(new Event(LOADED_EVENT));
       setVisible(false);
     };
@@ -62,8 +75,7 @@ export default function PageLoader() {
     });
 
     return () => ctx.revert();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lenis]);
+  }, []);
 
   if (!visible) return null;
 
