@@ -105,6 +105,10 @@ body {
   overflow-anchor: none;
   cursor: none;
   position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 
 /* Fixed corner ambience — pure CSS, no canvas/asset cost, always-on premium depth cue. */

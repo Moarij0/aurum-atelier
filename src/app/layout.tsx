@@ -4,6 +4,7 @@ import "./globals.css";
 import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 import LuxuryCursor from "@/components/providers/LuxuryCursor";
 import ScrollProgress from "@/components/providers/ScrollProgress";
+import CopyProtection from "@/components/providers/CopyProtection";
 import PageLoader from "@/components/PageLoader";
 import StructuredData from "@/components/StructuredData";
 import { SITE } from "@/constants/site";
@@ -53,6 +54,7 @@ export default function RootLayout({
     <html lang="en" className={`${fraunces.variable} h-full`}>
       <body className="min-h-full antialiased">
         <StructuredData />
+        <CopyProtection />
         <SmoothScrollProvider>
           <PageLoader />
           <LuxuryCursor />
